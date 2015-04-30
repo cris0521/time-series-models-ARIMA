@@ -94,3 +94,19 @@ sigma^2 estimated as 0.0002404:  log likelihood = 9671.66,  aic = -19337.32  # r
 > acf(arimaresidual,xlab="(a) Lag")
 > qqnorm(arimaresidual,xlab="(b) Theoretical Quantiles")
 > qqline(arimaresidual,  probs = c(0.05, 0.95))  most residuals are removed. However, it is not good enough especially residuals follow normal distribution not very well
+
+# forecasting by loop
+> x=read.table("F:/data/nasdaq2001-2014.txt",header=T) # within sample + out of sample from Jan 2015 
+> x1=x[,7]
+> x3=diff(log(x1))
+> i=3521
+> c=x3[1:3520]
+> mloop=model
+> l=length(c)
+> for (l in c(3520:3550))
+{
+c[i]=predict(mloop,n.ahead=1)
+l=length(c)
+mloop=arima(x3[1:i], order=c(2,0,0),include.mean=F)
+i=i+1
+} # forecast about 30 data and compare them with real data from Jan 2015.
